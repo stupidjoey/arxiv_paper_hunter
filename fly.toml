@@ -1,27 +1,28 @@
-# fly.toml app configuration file generated for arxiv-paper-hunter on 2026-01-25T12:13:00+08:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'arxiv-paper-hunter'
-primary_region = 'sjc'
+# fly.toml 脚本任务版
+app = 'arxiv-paper-hunter-kcbemq'
+primary_region = 'lax'
 
 [build]
   dockerfile = "Dockerfile"
 
 [env]
-  PORT = '8080'
+  # 脚本通常不需要 PORT，除非你的代码里强制读取了该环境变量
+  # 你可以在这里添加抓取相关的环境变量
+  # RUN_MODE = "cron" 
 
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+# --- 关键修改：删除 [http_service] 块 ---
+# 因为脚本不需要对外暴露端口，删掉原有的 [http_service]
 
 [processes]
+  # 保持你的启动脚本即可
   app = "./run_tracker.sh"
 
 [[vm]]
+  # 推荐使用最低配，跑完即停，非常省钱
   size = 'shared-cpu-1x'
+  memory_mb = 512
+
+# 如果你有持久化已读论文的需求，请保留或添加 [[mounts]] 块
+# [[mounts]]
+#   source = "hunter_data"
+#   destination = "/data"
