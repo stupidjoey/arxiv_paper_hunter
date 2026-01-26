@@ -207,8 +207,8 @@ def main(argv: List[str] | None = None) -> int:
                     if notifier:
                         try:
                             notifier.send_message(msg)
-                        if assets.cover_image:
-                            notifier.send_photo(assets.cover_image)
+                            if assets.cover_image:
+                                notifier.send_photo(assets.cover_image)
                         except Exception as exc:
                             logging.error("Failed to push to Telegram: %s", exc)
                 except Exception as exc:
