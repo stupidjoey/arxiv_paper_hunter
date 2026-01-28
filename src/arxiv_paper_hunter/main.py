@@ -120,6 +120,20 @@ def main(argv: List[str] | None = None) -> int:
             )
 
     papers = harvester.search()
+    # Push harvest summary to Telegram first if requested.
+    harvest_msg = (
+        f"Searching arXiv with keywords={search_cfg.keywords}, "
+        f"categories={search_cfg.categories}, "
+        f"date_range={search_cfg.since} to {search_cfg.until}\n"
+        f"Fetched {len(papers)} papers."
+    )
+    logging.info(harvest_msg)
+    if notifier:
+        try:
+            notifier.send_message(harvest_msg)
+        except Exception as exc:
+            logging.error("Failed to push harvest summary to Telegram: %s", exc)
+
     accepted = 0
     downloaded: list[tuple] = []
     llm_checker = (

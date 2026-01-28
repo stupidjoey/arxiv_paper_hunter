@@ -18,8 +18,8 @@ if [ -d "downloads" ]; then
 fi
 
 DEFAULT_ARGS=(
-  --last-n-days 3
-  --max-results 300
+  --last-n-days 1
+  --max-results 1000
   --require-keyword-match
   --skip-gatekeeper
   --no-summary
